@@ -3,29 +3,29 @@
 	let pumpkin = {
 	  color: 'green',
 	  weight: '34 kg',
-	  'ціна за кілограм': '26 грн',
 	  pricePumpkin: function(){
 	  	return parseFloat(this.weight) * parseFloat(this['ціна за кілограм']) + ' грн.';
 	  }
 	};
+	pumpkin['ціна за кілограм'] = '26 грн';
 	console.groupCollapsed('Вартість гарбуза:');
 	console.log(pumpkin.pricePumpkin());
 	console.groupEnd();
 
 /* 2. Створіть метод, який би повертав копію гарбуза. Можна застосувати не глибоке копіювання.
 	Створіть масив з п'яти гарбузів, використовуючи даний метод копіювання. */
+	
+	pumpkin.copy = function copyPumpkin(){
+		let obj = {};
+		for (let key in this) {
+		  obj[key] = this[key];
+		}
+		return obj;
+	}
 
 	let arrCopiedPumpkins = [];
 	for (let i = 0; i < 5; i++){
-		arrCopiedPumpkins.push(copyPumpkin());
-	}
-
-	function copyPumpkin(){
-		let obj = {};
-		for (let key in pumpkin) {
-		  obj[key] = pumpkin[key];
-		}
-		return obj;
+		arrCopiedPumpkins.push(pumpkin.copy());
 	}
 
 	console.groupCollapsed('Масив з 5 скопійованих гарбузів:');
@@ -68,10 +68,10 @@
 /* 6. Створіть функцію, що отримує у якості аргументів гарбузи 
 	і виводить в консоль в стовбчик їх ціну. Передайте в функцію масив гарбузів. */
 
-	function showPumpkinsPrice(arr){
-		arr.forEach(function(p){
+	function showPumpkinsPrice(){
+		Array.prototype.forEach.call(arguments, function(p){
 			console.log(p.pricePumpkin());
 		});
 	}
 
-	showPumpkinsPrice(arrCopiedPumpkins);
+	showPumpkinsPrice(...arrCopiedPumpkins);
